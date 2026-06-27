@@ -1,0 +1,40 @@
+conf t
+int g1
+ip add dhcp
+no shut
+end
+sh ip int brief
+
+
+conf t
+logging on
+logging host 208.8.8.133 transport udp port 9001
+logging trap informational
+end
+
+
+config t
+NO ip access-list standard NOPORN
+ip access-list standard NOPORN
+DENY 66.254.0.0 0.0.255.255  log
+deny 161.49.0.0 0.0.255.255  log
+Permit Any
+Int Gi 1
+ ip access-group NOPORN in
+end
+
+
+
+SNMP v2
+
+conf t
+access-list 10 permit 208.8.8.185
+snmp-server community public RO 10
+end
+
+SNMP v3
+
+conf t
+snmp-server group zabbix v3 priv
+snmp-server use admin zabbix v3 auth sha C1sc0123 priv aes 128 C1sc0123
+end
